@@ -131,7 +131,7 @@ export default async function ArticlePage({ params }: Props) {
                 <div className="flex items-center gap-2">
                   <Badge variant="secondary">AI-Generated</Badge>
                   <span className="text-muted-foreground">
-                    Created on {article.createdAt ? new Date(article.createdAt).toLocaleDateString() : 'Unknown date'}
+                    Created on {new Date(article.createdAt).toLocaleDateString()}
                   </span>
                 </div>
                 <VoteButtons articleId={article.id} votes={article.votes} />
