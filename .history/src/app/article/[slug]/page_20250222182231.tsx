@@ -15,7 +15,7 @@ type Props = {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/article/${params.slug}`, { cache: "no-store" })
+  const res = await fetch(`/api/articles/${params.slug}`, { cache: "no-store" })
   if (!res.ok) {
     // fallback title if article is not found
     const title = params.slug.replace(/_/g, " ")
@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ArticlePage({ params }: Props) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/article/${params.slug}`, { cache: "no-store" })
+  const res = await fetch(`/api/articles/${params.slug}`, { cache: "no-store" })
   if (!res.ok) return <div>Article not found</div>
   const article = await res.json()
 
@@ -141,22 +141,20 @@ export default async function ArticlePage({ params }: Props) {
               <h1 className="text-[2rem] font-serif mb-4">{article.title}</h1>
 
               {/* Article Image */}
-              {article.image && (
-                <div className="float-right ml-6 mb-4 w-[400px]">
-                  <figure className="border rounded p-2 bg-gray-50">
-                    <Image
-                      src={article.image.url || "/placeholder.svg"}
-                      alt={article.title}
-                      width={400}
-                      height={300}
-                      className="w-full h-auto"
-                    />
-                    <figcaption className="text-center mt-2 text-muted-foreground">
-                      {article.image.caption}
-                    </figcaption>
-                  </figure>
-                </div>
-              )}
+              <div className="float-right ml-6 mb-4 w-[400px]">
+                <figure className="border rounded p-2 bg-gray-50">
+                  <Image
+                    src={article.image.url || "/placeholder.svg"}
+                    alt={article.title}
+                    width={400}
+                    height={300}
+                    className="w-full h-auto"
+                  />
+                  <figcaption className="text-center mt-2 text-muted-foreground">
+                    {article.image.caption}
+                  </figcaption>
+                </figure>
+              </div>
 
               {/* Article Body */}
               <div className="prose max-w-none wiki-article">
