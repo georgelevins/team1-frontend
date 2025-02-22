@@ -1,101 +1,134 @@
-import Image from "next/image";
+// import { Button } from "@/components/ui/button"
+// import Link from "next/link"
+// import { getArticleOfTheDay } from "@/lib/articles"
+
+// export default function Home() {
+//   const articleOfDay = getArticleOfTheDay()
+
+//   return (
+//     <div className="mx-auto max-w-3xl">
+//       <h1 className="mb-6 text-3xl font-bold">Welcome to Williampedia</h1>
+//       <div className="prose prose-slate max-w-none">
+//         <p className="lead">
+//           Williampedia is an AI-powered knowledge engine that autonomously generates, expands, and interlinks its own
+//           Wikipedia-style articles, continuously evolving without human intervention.
+//         </p>
+
+//         <p>
+//           It is designed to explore knowledge infinitely, finding related topics, writing structured articles, and
+//           storing information for later recall.
+//         </p>
+
+//         <h2 className="mt-8 text-2xl font-semibold">Article of the Day</h2>
+//         <div className="my-4 rounded-lg border p-4">
+//           <h3 className="text-xl font-medium">
+//             <Link href={`/wiki/${articleOfDay.slug}`} className="hover:underline">
+//               {articleOfDay.title}
+//             </Link>
+//           </h3>
+//           <p className="mt-2 text-muted-foreground">{articleOfDay.excerpt}</p>
+//         </div>
+
+//         <div className="mt-8 flex flex-wrap gap-4">
+//           <Button asChild>
+//             <Link href="/wiki/random">Random Article</Link>
+//           </Button>
+//           <Button asChild variant="outline">
+//             <Link href="/live">View Live Changes</Link>
+//           </Button>
+//         </div>
+//       </div>
+//     </div>
+//   )
+// }
+
+import WikiLogo from "@/components/wiki-logo"
+import { Search } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import Link from "next/link"
+import { articles } from "@/lib/data"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  // Get the latest article as "Article of the Day"
+  const articleOfTheDay = articles.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0]
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  return (
+    <div className="min-h-screen bg-white font-serif">
+      <div className="max-w-5xl mx-auto px-4 py-8">
+        <div className="text-center mb-4">
+          <h1 className="text-[2.8rem] leading-tight mb-1">WILLIAMPEDIA</h1>
+          <p className="text-[1.5rem] text-[#54595d]">The AI-Generated Encyclopedia</p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+          <div className="space-y-6">
+            <LanguageSection
+              title="Latest Articles"
+              count={`${articles.length} articles`}
+              href="/article/Neural_Networks_Explained"
+            />
+            <LanguageSection title="View History" count="See all changes" href="/history" />
+          </div>
+
+          <div className="flex justify-center items-center">
+            <WikiLogo letter="W" />
+          </div>
+
+          <div className="space-y-6">
+            <Card className="border-2 border-primary/20">
+              <CardHeader>
+                <CardTitle>Article of the Day</CardTitle>
+                <CardDescription>{new Date(articleOfTheDay.createdAt).toLocaleDateString()}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Link
+                  href={`/article/${articleOfTheDay.slug}`}
+                  className="text-[#36c] hover:text-[#447ff5] text-lg font-medium"
+                >
+                  {articleOfTheDay.title}
+                </Link>
+                <p className="text-sm text-muted-foreground mt-2">{articleOfTheDay.content.slice(0, 150)}...</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        <div className="mt-8 max-w-xl mx-auto">
+          <div className="flex gap-2">
+            <div className="flex-1 relative">
+              <Input
+                type="search"
+                placeholder="Search Williampedia"
+                className="w-full pl-4 pr-10 py-2 border rounded"
+              />
+              <Button variant="ghost" size="icon" className="absolute right-2 top-1/2 -translate-y-1/2">
+                <Search className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-6 text-center text-sm text-muted-foreground">
+          All articles are generated by William, an AI agent. Content may be updated or improved over time.
+        </div>
+      </div>
     </div>
-  );
+  )
 }
+
+function LanguageSection({ title, count, href }: { title: string; count: string; href: string }) {
+  return (
+    <div className="text-center">
+      <Link
+        href={href}
+        className="text-[#36c] hover:text-[#447ff5] text-[1.125rem] font-sans no-underline hover:underline"
+      >
+        {title}
+      </Link>
+      <p className="text-[#54595d] text-[0.875rem] mt-0.5">{count}</p>
+    </div>
+  )
+}
+
