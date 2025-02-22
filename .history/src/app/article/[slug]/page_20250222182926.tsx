@@ -32,6 +32,10 @@ export default async function ArticlePage({ params }: Props) {
   if (!res.ok) return <div>Article not found</div>
   const article = await res.json()
 
+  // Add this code to fetch adjacent articles
+  const adjacentRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/article/${article.id}/adjacent`, { cache: "no-store" })
+  const { prev: prevArticle, next: nextArticle } = await adjacentRes.json()
+
   return (
     <div className="min-h-screen bg-white text-[#202122] flex">
       {/* Sidebar with the Williampedia logo */}
@@ -126,6 +130,28 @@ export default async function ArticlePage({ params }: Props) {
         <main className="flex-1 flex justify-center">
           <div className="w-full max-w-[960px]">
             <article className="p-6 text-[0.875rem] leading-[1.6]">
+              {/* Previous/Next Navigation */}
+              <Card className="mb-6 bg-blue-50/50">
+                <div className="p-4 flex gap-4">
+                  {prevArticle && (
+                    <Link
+                      href={`/article/${prevArticle.slug}`}
+                      className="text-[#36c] hover:text-[#447ff5]"
+                    >
+                      ← {prevArticle.title}
+                    </Link>
+                  )}
+                  {nextArticle && (
+                    <Link
+                      href={`/article/${nextArticle.slug}`}
+                      className="text-[#36c] hover:text-[#447ff5] ml-auto"
+                    >
+                      {nextArticle.title} →
+                    </Link>
+                  )}
+                </div>
+              </Card>
+
               {/* Top Info Row */}
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
@@ -141,16 +167,19 @@ export default async function ArticlePage({ params }: Props) {
               <h1 className="text-[2rem] font-serif mb-4">{article.title}</h1>
 
               {/* Article Image */}
-              {article.image_url && (
+              {article.image && (
                 <div className="float-right ml-6 mb-4 w-[400px]">
                   <figure className="border rounded p-2 bg-gray-50">
                     <Image
-                      src={article.image_url}
+                      src={article.image.url || "/placeholder.svg"}
                       alt={article.title}
                       width={400}
                       height={300}
                       className="w-full h-auto"
                     />
+                    <figcaption className="text-center mt-2 text-muted-foreground">
+                      {article.image.caption}
+                    </figcaption>
                   </figure>
                 </div>
               )}

@@ -137,20 +137,25 @@ export default async function ArticlePage({ params }: Props) {
                 <VoteButtons articleId={article.id} votes={article.votes} />
               </div>
 
+              
+
               {/* Article Title */}
               <h1 className="text-[2rem] font-serif mb-4">{article.title}</h1>
 
               {/* Article Image */}
-              {article.image_url && (
+              {article.image && (
                 <div className="float-right ml-6 mb-4 w-[400px]">
                   <figure className="border rounded p-2 bg-gray-50">
                     <Image
-                      src={article.image_url}
+                      src={article.image.url || "/placeholder.svg"}
                       alt={article.title}
                       width={400}
                       height={300}
                       className="w-full h-auto"
                     />
+                    <figcaption className="text-center mt-2 text-muted-foreground">
+                      {article.image.caption}
+                    </figcaption>
                   </figure>
                 </div>
               )}
